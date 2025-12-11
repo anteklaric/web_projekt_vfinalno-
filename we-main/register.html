@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registracija - Beatles Fan Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+            <ul id="navMenu">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="albums.html">ALBUMS</a></li>
+                <li><a href="members.html">MEMBERS</a></li>
+                <li><a href="quotes.html">QUOTES</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="form-container">
+        <h2>Registracija</h2>
+        <form id="registerForm">
+            <input type="text" name="ime" placeholder="Ime" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="lozinka" id="lozinka1" placeholder="Lozinka" required>
+            <input type="password" name="lozinka2" id="lozinka2" placeholder="Ponovite lozinku" required>
+            <button type="submit">Registriraj se</button>
+        </form>
+        <p id="regMsg" style="margin-top:15px;font-weight:bold;"></p>
+        <p class="auth_m">Već imaš račun? <a href="login.html" class="btn-rlog">Login</a></p>
+    </div>
+
+    <script>
+        // Hamburger
+        document.getElementById('hamburger').onclick = () => {
+            document.getElementById('hamburger').classList.toggle('active');
+            document.querySelector('.navbar ul').classList.toggle('active');
+        };
+
+        // REGISTRACIJA
+        document.getElementById("registerForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const ime = this.ime.value.trim();
+            const email = this.email.value.trim();
+            const lozinka1 = this.lozinka1.value;
+            const lozinka2 = this.lozinka2.value;
+            const msg = document.getElementById("regMsg");
+
+            if (!ime || !email || !lozinka1 || !lozinka2) {
+                msg.textContent = "Sva polja su obavezna!";
+                msg.style.color = "red";
+                return;
+            }
+
+            if (lozinka1 !== lozinka2) {
+                msg.textContent = "Lozinke se ne podudaraju!";
+                msg.style.color = "red";
+                return;
+            }
+
+            if (lozinka1.length < 6) {
+                msg.textContent = "Lozinka mora imati barem 6 znakova!";
+                msg.style.color = "red";
+                return;
+            }
+
+            msg.textContent = "Registriram...";
+            msg.style.color = "#0f0";
+
+            try {
+                const res = await fetch("api/register.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `ime=${encodeURIComponent(ime)}&email=${encodeURIComponent(email)}&lozinka=${encodeURIComponent(lozinka1)}`
+                });
+
+                const data = await res.json();
+                msg.textContent = data.message;
+                msg.style.color = data.status === "ok" ? "lime" : "red";
+
+                if (data.status === "ok") {
+                    setTimeout(() => location.href = "login.html", 1500);
+                }
+            } catch (err) {
+                msg.textContent = "Greška sa serverom";
+                msg.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>

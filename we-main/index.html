@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Beatles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html"><img src="images/logo.png" alt="The Beatles Logo"></a>
+            
+            <ul id="navMenu">
+                <li><a href="index.html" class="active">HOME</a></li>
+                <li><a href="albums.html">ALBUMS</a></li>
+                <li><a href="members.html">MEMBERS</a></li>
+                <li><a href="quotes.html">QUOTES</a></li>
+                
+                <!-- PAMETNI DIO – mijenja se ovisno o logiranju -->
+                <li id="authLink">
+                    <a href="login.html">Login</a>
+                </li>
+            </ul>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>EXPERIENCE THE SOUND THAT CHANGED THE WORLD</h1>
+    </section>
+
+    <div class="sections-container">
+        <section class="info-block">
+            <img src="images/beatles1.jpg" class="info-img" alt="The Beatles">
+            <div class="info-text">
+                <h2>The Early Years</h2>
+                <p>
+                    Formed in Liverpool in 1960, The Beatles began as a small group playing
+                    local clubs, inspired by American rock & roll and rhythm and blues.
+                    Their relentless drive, combined with musical curiosity, helped them
+                    rapidly evolve from energetic cover performers into innovative
+                    songwriters.  
+                    Over time, their concerts attracted increasingly large crowds, and their
+                    chemistry - Lennon's edge, McCartney's melody, Harrison's quiet depth and
+                    Starr's steady rhythm - became the foundation of a new era in popular music.
+                </p>
+            </div>
+        </section>
+
+        <section class="info-block reverse">
+            <img src="images/beatles2.webp" class="info-img" alt="Beatles Abbey Road">
+            <div class="info-text">
+                <h2>Global Breakthrough</h2>
+                <p>
+                    When Beatlemania exploded in 1963 and 1964, the band reshaped pop culture
+                    across the world. Their appearance on The Ed Sullivan Show marked a
+                    turning point, drawing an audience of over 70 million viewers.  
+                    Beyond their charming presence, their music began to incorporate
+                    unexpected influences - folk, ... - pushing the boundaries of what a pop song could be.  
+                    This period set the stage for some of the most influential albums in history.
+                </p>
+            </div>
+        </section>
+
+        <section class="info-block">
+            <img src="images/beatles3.webp" class="info-img" alt="Beatles Sgt Pepper">
+            <div class="info-text">
+                <h2>The Creative Revolution</h2>
+                <p>
+                    Albums such as "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", and
+                    "The White Album" demonstrated the band's fearless experimentation.  
+                    They embraced studio technology, unconventional instruments, and
+                    songwriting that explored themes ranging from spirituality to social
+                    reflection.  
+                    Their impact extended far beyond music - they influenced fashion, film,
+                    youth culture, and social attitudes, becoming perhaps the most
+                    transformative band of the modern era.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>2025 The Beatles | All rights reserved &copy;</p>
+    </footer>
+
+    <!-- Skripte -->
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.navbar ul');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Ažuriranje navigacije i dropdowna
+        function updateNav() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const authLink = document.getElementById('authLink');
+
+            if (user) {
+                // Ulogiran – dropdown sa imenom + Profil + Odjava
+                authLink.innerHTML = `
+                    <div class="user-dropdown" style="position:relative;display:inline-block;">
+                        <a href="#" id="userBtn" style="color:#fff;text-decoration:none;font-weight:bold;">
+                            ${user.ime} ▼
+                        </a>
+                        <div id="dropdownMenu" style="display:none;position:absolute;right:0;top:40px;background:#222;padding:10px;border-radius:8px;min-width:160px;box-shadow:0 5px 15px rgba(0,0,0,0.7);z-index:9999;">
+                            <a href="profil.html" style="color:#fff;display:block;padding:10px;text-decoration:none;border-bottom:1px solid #444;">Profil</a>
+                            <a href="#" onclick="logout()" style="color:#ff6b6b;display:block;padding:10px;text-decoration:none;">Odjava</a>
+                        </div>
+                    </div>
+                `;
+
+                // Ako je admin – dodaj Admin link
+                if (user.uloga === 'admin') {
+                    const adminLi = document.createElement('li');
+                    adminLi.innerHTML = '<a href="admin.html">Admin</a>';
+                    authLink.parentNode.insertBefore(adminLi, authLink);
+                }
+
+                // Klik na ime otvara dropdown
+                document.getElementById('userBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const menu = document.getElementById('dropdownMenu');
+                    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                });
+
+            } else {
+                // Nije ulogiran – običan Login
+                authLink.innerHTML = '<a href="login.html">Login</a>';
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('user');
+            location.href = 'index.html';
+        }
+
+        // Zatvori dropdown kad klikneš van
+        document.addEventListener('click', function() {
+            const menu = document.getElementById('dropdownMenu');
+            if (menu) menu.style.display = 'none';
+        });
+
+        // Pokreni sve odmah
+        updateNav();
+    </script>
+</body>
+</html>

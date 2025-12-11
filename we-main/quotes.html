@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes - The Beatles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html"><img src="images/logo.png" alt="The Beatles Logo"></a>
+            <ul id="navMenu">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="albums.html">ALBUMS</a></li>
+                <li><a href="members.html">MEMBERS</a></li>
+                <li><a href="quotes.html" class="active">QUOTES</a></li>
+                <li id="authLink"><a href="login.html">Login</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero4">
+        <h3>THE BEATLES QUOTES</h3>
+    </section>
+
+    <main>
+        <section id="citati">
+            <div id="citatiList" class="quotes"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>2025 The Beatles | All rights reserved &copy;</p>
+    </footer>
+
+    <!-- Skripte -->
+    <script src="js/komentari.js"></script> <!-- DODANO -->
+    <script src="js/quotes.js"></script>
+
+    <script>
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.navbar ul');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Navigacija i dropdown
+        function updateNav() {
+            const user = JSON.parse(localStorage.getItem("user")) || null;
+            const authLink = document.getElementById('authLink');
+            if (user) {
+                authLink.innerHTML = `
+                    <div class="user-dropdown" style="position:relative;display:inline-block;">
+                        <a href="#" id="userBtn" style="color:#fff;text-decoration:none;font-weight:bold;">
+                            ${user.ime} ▼
+                        </a>
+                        <div id="dropdownMenu" style="display:none;position:absolute;right:0;top:40px;background:#222;padding:10px;border-radius:8px;min-width:160px;box-shadow:0 5px 15px rgba(0,0,0,0.7);z-index:9999;">
+                            <a href="profil.html" style="color:#fff;display:block;padding:10px;text-decoration:none;border-bottom:1px solid #444;">Profil</a>
+                            ${user.uloga === 'admin' ? '<a href="admin.html" style="color:#0f0;display:block;padding:10px;font-weight:bold;text-decoration:none;">Admin panel</a>' : ''}
+                            <a href="#" onclick="logout()" style="color:#ff6b6b;display:block;padding:10px;text-decoration:none;">Odjava</a>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('userBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const menu = document.getElementById('dropdownMenu');
+                    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                });
+            } else {
+                authLink.innerHTML = '<a href="login.html">Login</a>';
+            }
+        }
+        function logout() {
+            localStorage.removeItem('user');
+            location.href = 'index.html';
+        }
+        document.addEventListener('click', function() {
+            const menu = document.getElementById('dropdownMenu');
+            if (menu) menu.style.display = 'none';
+        });
+        updateNav();
+    </script>
+</body>
+</html>

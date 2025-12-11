@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Beatles Fan Site</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- ISTI HEADER KAO NA OSTALIM STRANICAMA – DROPDOWN UNUTAR NAVIGACIJE -->
+    <header>
+        <nav class="navbar">
+            <a href="admin.html"><img src="images/logo.png" alt="Logo"></a>
+            
+            <ul id="navMenu">
+            <!--    <li><a href="index.html">HOME</a></li>
+                <li><a href="albums.html">ALBUMS</a></li>
+                <li><a href="members.html">MEMBERS</a></li>
+                <li><a href="quotes.html">QUOTES</a></li>
+            -->    
+                <li id="authLink"><a href="login.html">Login</a></li>
+            </ul>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="admin-main" style="margin-top:100px;padding:20px;">
+
+        <!-- ===== DODAVANJE I PREGLED ALBUMA (već imaš) ===== -->
+        <section class="admin-form">
+            <h2>Dodaj novi Beatles album</h2>
+            <form id="addAlbumForm">
+                <input type="text" name="naziv" placeholder="Naziv albuma" required>
+                <input type="number" name="godina" placeholder="Godina izdanja" required>
+                <textarea name="opis" placeholder="Opis albuma" required></textarea>
+                <input type="text" name="slika" placeholder="URL slike omota" required>
+                <button type="submit">Dodaj album</button>
+            </form>
+            <p id="albumMsg"></p>
+        </section>
+
+        <section>
+            <h2>Pregled i brisanje albuma</h2>
+            <div id="adminAlbums" class="album-grid"></div>
+        </section>
+
+        <hr style="margin:60px 0;border:1px solid #333;">
+
+        <!-- ===== UPRAVLJANJE ČLANOVIMA (MEMBERS) ===== -->
+        <section class="admin-form">
+            <h2>Dodaj novog člana benda</h2>
+            <form id="addMemberForm">
+                <input type="text" name="ime" placeholder="Ime člana (npr. John Lennon)" required>
+                <input type="text" name="uloga" placeholder="Uloga (vokal, gitara, bubnjevi...)" required>
+                <input type="text" name="slika" placeholder="URL slike člana" required>
+                <button type="submit">Dodaj člana</button>
+            </form>
+            <p id="memberMsg"></p>
+        </section>
+
+        <section>
+            <h2>Pregled i brisanje članova</h2>
+            <div id="adminMembers" class="members-grid"></div>
+        </section>
+
+        <hr style="margin:60px 0;border:1px solid #333;">
+
+
+        <!-- ===== DODAVANJE PJESME ===== -->
+        <!-- DODAVANJE PJESME – PRAVI TEKST -->
+        <section class="admin-form">
+            <h2>Dodaj novu pjesmu</h2>
+            <form id="addSongForm">
+                <select name="album_id" id="songAlbumSelect" required>
+                    <option value="">— Odaberi album —</option>
+                </select>
+                <input type="text" name="naziv" placeholder="Naziv pjesme (npr. Yesterday)" required>
+                <input type="text" name="trajanje" placeholder="Trajanje (npr. 2:05)" required>
+                <textarea name="tekst" rows="8" placeholder="Ovde upiši cijeli tekst pjesme..." style="width:100%;padding:12px;border-radius:8px;background:#222;color:#fff;border:1px solid #444;"></textarea>
+                <button type="submit" style="margin-top:15px;padding:12px 30px;background:#0f0;color:#000;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">
+                    Dodaj pjesmu
+                </button>
+            </form>
+            <p id="songMsg" style="margin-top:15px;font-weight:bold;"></p>
+        </section>
+
+        <section>
+            <h2>Pregled i brisanje pjesama</h2>
+            <div id="adminSongs"></div>
+        </section>
+        <hr style="margin:60px 0;border:1px solid #333;">
+
+        <!-- ===== UPRAVLJANJE CITATIMA (QUOTES) ===== -->
+        <section class="admin-form">
+            <h2>Dodaj novi citat</h2>
+            <form id="addQuoteForm">
+                <textarea name="tekst" placeholder="Tekst citata" required></textarea>
+                <select name="clan_id" id="quoteClanSelect" required>
+                    <option value="">Odaberi člana</option>
+                </select>
+                <button type="submit">Dodaj citat</button>
+            </form>
+            <p id="quoteMsg"></p>
+        </section>
+
+        <section>
+            <h2>Pregled i brisanje citata</h2>
+            <div id="adminQuotes" class="quotes"></div>
+        </section>
+
+
+        <!-- ===== BRISANJE KOMENTARA (samo admin) ===== -->
+        <section class="admin-form">
+            <h2>Upravljanje komentarima</h2>
+            <div id="adminKomentari"></div>
+        </section>
+        <hr style="margin:60px 0;border:1px solid #333;">
+        
+    </main>
+
+    <footer>
+        <p>2025 The Beatles | All rights reserved &copy;</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/admin.js?v=999"></script> <!-- već imaš logiku za albume -->
+
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.navbar ul');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+    </script>      
+</body>
+</html>
